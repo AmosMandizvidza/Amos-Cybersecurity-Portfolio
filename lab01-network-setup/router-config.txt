@@ -1,0 +1,52 @@
+Router config...
+! Encrypt passwords
+service password-encryption
+
+! Set hostname
+hostname R1
+
+! Disable DNS lookup
+no ip domain-lookup
+
+! Create admin user
+username admin privilege 15 secret Admin@123
+
+! Configure domain
+ip domain-name lab.local
+
+! Generate RSA key for SSH
+crypto key generate rsa
+1024
+
+! Enable SSH v2
+ip ssh version 2
+
+! Secure VTY lines
+line vty 0 4
+ transport input ssh
+ login local
+ exec-timeout 5 0
+
+! Console line security
+line console 0
+ password cisco123
+ login
+ exec-timeout 5 0
+
+! Secure privileged mode
+enable secret StrongPassword!
+
+! Add security banner
+banner motd #
+⚠️ UNAUTHORIZED ACCESS PROHIBITED!
+All activity is monitored.
+#
+
+! Example ACL (Allow PC1 network only)
+access-list 10 permit 192.168.1.0 0.0.0.255
+access-list 10 deny any
+
+! Apply ACL to VTY access
+line vty 0 4
+ access-class 10 in
+

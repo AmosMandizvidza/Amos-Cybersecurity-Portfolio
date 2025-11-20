@@ -1,0 +1,28 @@
+Switch config...
+! Set hostname
+hostname SW1
+
+! Disable unused ports
+interface range fa0/10 - 24
+ shutdown
+
+! Enable port-security on PC ports
+interface fa0/1
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 1
+ switchport port-security violation restrict
+ switchport port-security mac-address sticky
+
+interface fa0/2
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 1
+ switchport port-security violation shutdown
+ switchport port-security mac-address sticky
+
+interface fa0/3
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 1
+ switchport port-security mac-address sticky
